@@ -24,7 +24,7 @@ class ListController extends Controller
 
     public function edit(DogList $dogList) {
         if ($dogList->user_id !== auth()->id()) {
-            abort(403); // Forbidden access if not owner
+            abort(403);
         }
         $dogList->load('items');
         return view('lists.edit', compact('dogList'));
@@ -32,17 +32,14 @@ class ListController extends Controller
 
     public function update(Request $request, DogList $dogList) {
         if ($dogList->user_id !== auth()->id()) {
-            abort(403); // Forbidden access if not owner
+            abort(403);
         }
     
-        // Update the list name
         $dogList->update($request->only('name'));
     
-        // Check if there are any items to delete
         if ($request->has('delete_items')) {
-            $deleteIds = $request->input('delete_items'); // Array of item IDs to delete
+            $deleteIds = $request->input('delete_items');
     
-            // Ensure that items being deleted belong to the current list
             $dogList->items()->whereIn('id', $deleteIds)->delete();
         }
     
@@ -52,7 +49,7 @@ class ListController extends Controller
 
     public function destroy(DogList $dogList) {
         if ($dogList->user_id !== auth()->id()) {
-            abort(403); // Forbidden access if not owner
+            abort(403);
         }
         $dogList->delete();
         return redirect()->route('lists.index')->with('success', 'List deleted.');

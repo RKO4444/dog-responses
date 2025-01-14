@@ -28,13 +28,10 @@ class SearchController extends Controller
 
     public function filter(Request $request) {
         $filter = $request->input('filter');
-        // Validate filter input if needed.
-        
-        // Determine the regex pattern or numerical bounds based on the filter
+
         $pattern = '/^' . str_replace('x', '[0-9]', $filter) . '$/';
 
-        // Simulate response codes since http.dog images follow a pattern:
-        // For simplicity, we assume that valid codes range from 100 to 599.
+
         $results = [];
         foreach ($this->validHttpCodes as $code) {
             if (preg_match($pattern, (string)$code)) {
